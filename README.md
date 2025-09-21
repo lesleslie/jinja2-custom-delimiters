@@ -1,9 +1,5 @@
 # Jinja2 Custom Delimiters
 
-![Build](https://github.com/lesleslie/jinja2-delimiters-plugin/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-
 A PyCharm/IntelliJ IDEA plugin that allows you to configure custom Jinja2 template delimiters while maintaining full IDE language support including syntax highlighting, code completion, formatting, and refactoring capabilities.
 
 ## Why This Plugin?
