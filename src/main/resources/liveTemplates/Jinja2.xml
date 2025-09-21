@@ -1,0 +1,148 @@
+<templateSet group="Jinja2 Custom Delimiters">
+  <!-- Control Structures -->
+  <template name="jif" value="{% if $CONDITION$ %}&#10;    $CONTENT$&#10;{% endif %}" description="if statement" toReformat="true" toShortenFQNames="false">
+    <variable name="CONDITION" expression="" defaultValue="condition" alwaysStopAt="true" />
+    <variable name="CONTENT" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jife" value="{% if $CONDITION$ %}&#10;    $IF_CONTENT$&#10;{% else %}&#10;    $ELSE_CONTENT$&#10;{% endif %}" description="if-else statement" toReformat="true" toShortenFQNames="false">
+    <variable name="CONDITION" expression="" defaultValue="condition" alwaysStopAt="true" />
+    <variable name="IF_CONTENT" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ELSE_CONTENT" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jfor" value="{% for $ITEM$ in $ITEMS$ %}&#10;    $CONTENT$&#10;{% endfor %}" description="for loop" toReformat="true" toShortenFQNames="false">
+    <variable name="ITEM" expression="" defaultValue="item" alwaysStopAt="true" />
+    <variable name="ITEMS" expression="" defaultValue="items" alwaysStopAt="true" />
+    <variable name="CONTENT" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jfore" value="{% for $ITEM$ in $ITEMS$ %}&#10;    $CONTENT$&#10;{% else %}&#10;    $EMPTY_CONTENT$&#10;{% endfor %}" description="for loop with else" toReformat="true" toShortenFQNames="false">
+    <variable name="ITEM" expression="" defaultValue="item" alwaysStopAt="true" />
+    <variable name="ITEMS" expression="" defaultValue="items" alwaysStopAt="true" />
+    <variable name="CONTENT" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="EMPTY_CONTENT" expression="" defaultValue="No items found" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jset" value="{% set $VARIABLE$ = $VALUE$ %}" description="set variable" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="value" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jwith" value="{% with $VARIABLE$ = $VALUE$ %}&#10;    $CONTENT$&#10;{% endwith %}" description="with statement" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="value" alwaysStopAt="true" />
+    <variable name="CONTENT" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <!-- Template Inheritance -->
+  <template name="jext" value="{% extends '$TEMPLATE$' %}" description="extends template" toReformat="true" toShortenFQNames="false">
+    <variable name="TEMPLATE" expression="" defaultValue="base.html" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jblock" value="{% block $NAME$ %}&#10;    $CONTENT$&#10;{% endblock %}" description="block definition" toReformat="true" toShortenFQNames="false">
+    <variable name="NAME" expression="" defaultValue="content" alwaysStopAt="true" />
+    <variable name="CONTENT" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jinc" value="{% include '$TEMPLATE$' %}" description="include template" toReformat="true" toShortenFQNames="false">
+    <variable name="TEMPLATE" expression="" defaultValue="partial.html" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <!-- Macros -->
+  <template name="jmacro" value="{% macro $NAME$($ARGS$) %}&#10;    $CONTENT$&#10;{% endmacro %}" description="macro definition" toReformat="true" toShortenFQNames="false">
+    <variable name="NAME" expression="" defaultValue="macro_name" alwaysStopAt="true" />
+    <variable name="ARGS" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="CONTENT" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <!-- Variables and Expressions -->
+  <template name="jvar" value="{{ $VARIABLE$ }}" description="variable output" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jdef" value="{{ $VARIABLE$|default('$DEFAULT$') }}" description="variable with default" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <variable name="DEFAULT" expression="" defaultValue="default_value" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <!-- Comments -->
+  <template name="jcom" value="{# $COMMENT$ #}" description="comment" toReformat="true" toShortenFQNames="false">
+    <variable name="COMMENT" expression="" defaultValue="comment" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <!-- Common Filters -->
+  <template name="jtitle" value="{{ $VARIABLE$|title }}" description="title case filter" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jupper" value="{{ $VARIABLE$|upper }}" description="uppercase filter" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jlower" value="{{ $VARIABLE$|lower }}" description="lowercase filter" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jlen" value="{{ $VARIABLE$|length }}" description="length filter" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+
+  <template name="jescape" value="{{ $VARIABLE$|e }}" description="escape filter" toReformat="true" toShortenFQNames="false">
+    <variable name="VARIABLE" expression="" defaultValue="variable" alwaysStopAt="true" />
+    <context>
+      <option name="JINJA2_CUSTOM" value="true" />
+    </context>
+  </template>
+</templateSet>

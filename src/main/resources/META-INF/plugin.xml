@@ -1,15 +1,63 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<?xml version="1.0" encoding="UTF-8"?>
 <idea-plugin>
-    <id>com.github.lesleslie.jinja2delimitersplugin</id>
-    <name>jinja2-delimiters-plugin</name>
-    <vendor>lesleslie</vendor>
+    <id>com.wedgwoodwebworks.jinja2-custom-delimiters</id>
+    <name>Jinja2 Custom Delimiters</name>
+    <vendor email="les@wedgwoodwebworks.com" url="https://wedgwoodwebworks.com">Wedgwood Web Works</vendor>
+
+    <description><![CDATA[
+    Allows configuration of custom Jinja2 template delimiters while maintaining
+    PyCharm's full Jinja2 language support including syntax highlighting,
+    code completion, and formatting.
+    ]]></description>
+
+    <version>0.1.0</version>
 
     <depends>com.intellij.modules.platform</depends>
-
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.lesleslie.jinja2delimitersplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.lesleslie.jinja2delimitersplugin.startup.MyProjectActivity" />
+        <!-- Settings Configuration -->
+        <applicationConfigurable
+            parentId="language"
+            instance="com.wedgwoodwebworks.jinja2delimiters.settings.Jinja2DelimitersConfigurable"
+            id="com.wedgwoodwebworks.jinja2delimiters.settings"
+            displayName="Jinja2 Custom Delimiters"/>
+
+        <!-- Application Service for Settings -->
+        <applicationService
+            serviceImplementation="com.wedgwoodwebworks.jinja2delimiters.settings.Jinja2DelimitersSettings"/>
+
+        <!-- Custom File Type Factory -->
+        <fileType
+            name="Jinja2Custom"
+            implementationClass="com.wedgwoodwebworks.jinja2delimiters.lang.CustomJinja2FileType"
+            fieldName="INSTANCE"
+            language="Jinja2Custom"
+            extensions="j2;jinja2;html.j2"/>
+
+        <!-- Language Definition -->
+        <lang.parserDefinition
+            language="Jinja2Custom"
+            implementationClass="com.wedgwoodwebworks.jinja2delimiters.lang.CustomJinja2ParserDefinition"/>
+
+        <!-- Syntax Highlighter -->
+        <lang.syntaxHighlighterFactory
+            language="Jinja2Custom"
+            implementationClass="com.wedgwoodwebworks.jinja2delimiters.highlighting.CustomJinja2SyntaxHighlighterFactory"/>
+
+        <!-- Code Formatter -->
+        <lang.formatter
+            language="Jinja2Custom"
+            implementationClass="com.wedgwoodwebworks.jinja2delimiters.formatting.CustomJinja2FormattingModelBuilder"/>
     </extensions>
+
+    <actions>
+        <!-- Action to refresh templates with new delimiters -->
+        <action id="RefreshJinja2Delimiters"
+                class="com.wedgwoodwebworks.jinja2delimiters.actions.RefreshDelimitersAction"
+                text="Refresh Jinja2 Delimiters"
+                description="Refresh all Jinja2 files with new delimiter settings">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
 </idea-plugin>

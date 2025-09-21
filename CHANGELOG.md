@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# jinja2-delimiters-plugin Changelog
+# jinja2-custom-delimiters Changelog
 
 ## [Unreleased]
 ### Added

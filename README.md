@@ -1,52 +1,179 @@
-# jinja2-delimiters-plugin
+# Jinja2 Custom Delimiters
 
 ![Build](https://github.com/lesleslie/jinja2-delimiters-plugin/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-- [ ] Configure the [CODECOV_TOKEN](https://docs.codecov.com/docs/quick-start) secret for automated test coverage reports on PRs
+A PyCharm/IntelliJ IDEA plugin that allows you to configure custom Jinja2 template delimiters while maintaining full IDE language support including syntax highlighting, code completion, formatting, and refactoring capabilities.
+
+## Why This Plugin?
+
+Jinja2's default delimiters (`{{`, `{%`, `{#`) can conflict with other template engines or frontend frameworks. This plugin lets you use custom delimiters (like `<<`, `<#`, `/*`) while preserving all of PyCharm's powerful Jinja2 features.
+
+## Features
+
+### 🎨 **Custom Delimiter Configuration**
+- **Variable delimiters**: `{{ variable }}` → `<< variable >>`
+- **Block delimiters**: `{% for %}` → `<# for #>`
+- **Comment delimiters**: `{# comment #}` → `/* comment */`
+- **Line prefixes**: Enable line-based syntax (`# for item in items`)
+
+### 🧠 **Full IDE Language Support**
+- **Syntax highlighting** with proper color coding for delimiters, keywords, strings, and expressions
+- **Code completion** for Jinja2 keywords, filters, and functions
+- **Error detection** and syntax validation
+- **Code formatting** with proper indentation and structure
+- **Find usages** and navigation for variables and macros
+- **Refactoring support** including variable renaming
+
+### ⚡ **Advanced Features**
+- **Extract macro intention**: Convert selected Jinja2 code into reusable macros
+- **Live templates** for common Jinja2 patterns
+- **Performance optimization** with intelligent caching
+- **Hot reload**: Refresh delimiters without restarting IDE
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
-
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
-
-To keep everything working, do not remove `<!-- ... -->` sections. 
+Allows configuration of custom Jinja2 template delimiters while maintaining
+PyCharm's full Jinja2 language support including syntax highlighting,
+code completion, and formatting.
 <!-- Plugin description end -->
 
 ## Installation
 
-- Using the IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "jinja2-delimiters-plugin"</kbd> >
-  <kbd>Install</kbd>
-  
-- Using JetBrains Marketplace:
+### From JetBrains Marketplace (Recommended)
+1. Open PyCharm/IntelliJ IDEA
+2. Go to <kbd>File</kbd> → <kbd>Settings</kbd> → <kbd>Plugins</kbd>
+3. Click <kbd>Marketplace</kbd> tab
+4. Search for "Jinja2 Custom Delimiters"
+5. Click <kbd>Install</kbd>
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+### Manual Installation
+1. Download the latest plugin ZIP from [Releases](https://github.com/lesleslie/jinja2-custom-delimiters/releases)
+2. In PyCharm: <kbd>File</kbd> → <kbd>Settings</kbd> → <kbd>Plugins</kbd> → <kbd>⚙️</kbd> → <kbd>Install Plugin from Disk...</kbd>
+3. Select the downloaded ZIP file
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+## Quick Start
 
-- Manually:
+### 1. Configure Delimiters
+After installation, configure your custom delimiters:
 
-  Download the [latest release](https://github.com/lesleslie/jinja2-delimiters-plugin/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+1. Go to <kbd>File</kbd> → <kbd>Settings</kbd> → <kbd>Languages & Frameworks</kbd> → <kbd>Jinja2 Custom Delimiters</kbd>
+2. Set your preferred delimiters:
+   ```
+   Variable Start: <<        Variable End: >>
+   Block Start:    <%        Block End:    %>
+   Comment Start:  /*        Comment End:  */
+   ```
+3. Click <kbd>Apply</kbd>
 
+### 2. Create Template Files
+Create files with supported extensions (`.j2`, `.jinja2`, `.html.j2`):
+
+```html
+<!-- Instead of default Jinja2 -->
+{{ user.name }}
+{% for item in items %}
+  {# This is a comment #}
+{% endfor %}
+
+<!-- Use your custom delimiters -->
+<< user.name >>
+<% for item in items %>
+  /* This is a comment */
+<% endfor %>
+```
+
+### 3. Refresh (If Needed)
+If delimiters don't update immediately:
+- Use <kbd>Tools</kbd> → <kbd>Refresh Jinja2 Delimiters</kbd>
+- Or restart the IDE
+
+## Advanced Usage
+
+### Line-Based Syntax
+Enable line-based delimiters for cleaner templates:
+
+```
+Line Statement Prefix: #
+Line Comment Prefix:   ##
+```
+
+Then use:
+```html
+# for item in items
+  << item.name >>
+  ## This is a line comment
+# endfor
+```
+
+### Extract Macro Refactoring
+1. Select Jinja2 code in your template
+2. Press <kbd>Alt</kbd> + <kbd>Enter</kbd>
+3. Choose "Extract Jinja2 macro"
+4. The plugin will create a macro and replace the selection with a macro call
+
+### Supported File Types
+The plugin recognizes these file extensions:
+- `.j2` - Standard Jinja2 templates
+- `.jinja2` - Explicit Jinja2 templates
+- `.html.j2` - HTML templates with Jinja2
+
+## Use Cases
+
+### 🔧 **Avoiding Conflicts**
+When using Jinja2 with:
+- **Vue.js/Angular**: Use `<< >>` instead of `{{ }}` to avoid frontend framework conflicts
+- **Liquid templates**: Use different delimiters to distinguish template engines
+- **Custom build systems**: Match your organization's template conventions
+
+### 🎯 **Framework Integration**
+Perfect for:
+- **Django projects** with custom template configurations
+- **Flask applications** with non-standard Jinja2 setups
+- **Static site generators** with custom delimiter requirements
+- **Multi-template environments** where different delimiters clarify intent
+
+## Development
+
+### Building from Source
+```bash
+git clone https://github.com/lesleslie/jinja2-custom-delimiters.git
+cd jinja2-custom-delimiters
+./gradlew build
+```
+
+### Running Tests
+```bash
+./gradlew test
+```
+
+### Development IDE Setup
+```bash
+./gradlew runIde
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Add tests for new functionality
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/lesleslie/jinja2-custom-delimiters/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/lesleslie/jinja2-custom-delimiters/discussions)
+- **Email**: les@wedgwoodwebworks.com
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-Plugin based on the [IntelliJ Platform Plugin Template][template].
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+**Developed by** [Wedgwood Web Works](https://wedgwoodwebworks.com)
+
+Built with the [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
