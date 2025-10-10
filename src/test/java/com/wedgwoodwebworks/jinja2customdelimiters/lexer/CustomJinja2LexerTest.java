@@ -2,9 +2,9 @@ package com.wedgwoodwebworks.jinja2customdelimiters.lexer;
 
 import com.intellij.psi.tree.IElementType;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-import com.wedgwoodwebworks.jinja2delimiters.settings.Jinja2DelimitersSettings;
-import com.wedgwoodwebworks.jinja2delimiters.lexer.CustomJinja2Lexer;
-import com.wedgwoodwebworks.jinja2delimiters.lexer.Jinja2TokenTypes;
+import com.wedgwoodwebworks.jinja2customdelimiters.settings.Jinja2DelimitersSettings;
+import com.wedgwoodwebworks.jinja2customdelimiters.lexer.CustomJinja2Lexer;
+import com.wedgwoodwebworks.jinja2customdelimiters.lexer.Jinja2TokenTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +19,19 @@ public class CustomJinja2LexerTest extends BasePlatformTestCase {
         super.setUp();
         lexer = new CustomJinja2Lexer();
         settings = Jinja2DelimitersSettings.getInstance();
-        // Reset to default settings
-        settings.blockStartString = "{%";
-        settings.blockEndString = "%}";
-        settings.variableStartString = "{{";
-        settings.variableEndString = "}}";
-        settings.commentStartString = "{#";
-        settings.commentEndString = "#}";
-        settings.lineStatementPrefix = "";
-        settings.lineCommentPrefix = "";
+
+        // Ensure settings is initialized (it should be registered as application service)
+        assertNotNull("Settings service should be available in test", settings);
+
+        // Reset to default settings using setters
+        settings.setBlockStartString("{%");
+        settings.setBlockEndString("%}");
+        settings.setVariableStartString("{{");
+        settings.setVariableEndString("}}");
+        settings.setCommentStartString("{#");
+        settings.setCommentEndString("#}");
+        settings.setLineStatementPrefix("");
+        settings.setLineCommentPrefix("");
     }
 
     public void testBasicDelimiters() {
@@ -49,13 +53,13 @@ public class CustomJinja2LexerTest extends BasePlatformTestCase {
 
     public void testCustomDelimiters() {
         // Change to custom delimiters
-        settings.blockStartString = "<%";
-        settings.blockEndString = "%>";
-        settings.variableStartString = "[[";
-        settings.variableEndString = "]]";
-        settings.commentStartString = "<#";
-        settings.commentEndString = "#>";
-        
+        settings.setBlockStartString("<%");
+        settings.setBlockEndString("%>");
+        settings.setVariableStartString("[[");
+        settings.setVariableEndString("]]");
+        settings.setCommentStartString("<#");
+        settings.setCommentEndString("#>");
+
         lexer = new CustomJinja2Lexer(); // Recreate to pick up new settings
         
         String input = "<% if true %>[[ name ]]<# comment #>";
@@ -152,9 +156,9 @@ public class CustomJinja2LexerTest extends BasePlatformTestCase {
     }
 
     public void testLineBasedSyntax() {
-        settings.lineStatementPrefix = "%";
-        settings.lineCommentPrefix = "##";
-        
+        settings.setLineStatementPrefix("%");
+        settings.setLineCommentPrefix("##");
+
         lexer = new CustomJinja2Lexer(); // Recreate to pick up new settings
         
         String input = "% if condition\n## This is a comment\nText content";

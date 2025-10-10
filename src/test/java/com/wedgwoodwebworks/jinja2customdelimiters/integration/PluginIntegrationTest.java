@@ -1,11 +1,11 @@
-package com.wedgwoodwebworks.jinja2delimiters.integration;
+package com.wedgwoodwebworks.jinja2customdelimiters.integration;
 
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-import com.wedgwoodwebworks.jinja2delimiters.lang.CustomJinja2FileType;
-import com.wedgwoodwebworks.jinja2delimiters.settings.Jinja2DelimitersSettings;
+import com.wedgwoodwebworks.jinja2customdelimiters.lang.CustomJinja2FileType;
+import com.wedgwoodwebworks.jinja2customdelimiters.settings.Jinja2DelimitersSettings;
 
 /**
  * Integration tests to verify the plugin works end-to-end

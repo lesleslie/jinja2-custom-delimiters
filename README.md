@@ -1,47 +1,41 @@
 # Jinja2 Custom Delimiters
 
-![Build](https://github.com/lesleslie/jinja2-delimiters-plugin/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
+<!-- Plugin description -->
+**A PyCharm Professional / IntelliJ IDEA Ultimate plugin** that allows you to configure custom Jinja2 template delimiters while maintaining full IDE language support including syntax highlighting, code completion, and formatting.
 
-A PyCharm/IntelliJ IDEA plugin that allows you to configure custom Jinja2 template delimiters while maintaining full IDE language support including syntax highlighting, code completion, formatting, and refactoring capabilities.
+> **⚠️ Requires PyCharm Professional or IntelliJ IDEA Ultimate**
+> This plugin leverages PyCharm Professional's built-in Jinja2 formatter for perfect code formatting with custom delimiters.
+<!-- Plugin description end -->
 
 ## Why This Plugin?
 
-Jinja2's default delimiters (`{{`, `{%`, `{#`) can conflict with other template engines or frontend frameworks. This plugin lets you use custom delimiters (like `<<`, `<#`, `/*`) while preserving all of PyCharm's powerful Jinja2 features.
+Jinja2's default delimiters (`{{`, `{%`, `{#`) can conflict with other template engines or frontend frameworks. This plugin lets you use custom delimiters (like `[%`, `[[`, `[#`) while preserving all of PyCharm Professional's powerful Jinja2 features.
 
 ## Features
 
 ### 🎨 **Custom Delimiter Configuration**
-- **Variable delimiters**: `{{ variable }}` → `<< variable >>`
-- **Block delimiters**: `{% for %}` → `<# for #>`
-- **Comment delimiters**: `{# comment #}` → `/* comment */`
-- **Line prefixes**: Enable line-based syntax (`# for item in items`)
+- **Variable delimiters**: `{{ variable }}` → `[[ variable ]]`
+- **Block delimiters**: `{% for %}` → `[% for %]`
+- **Comment delimiters**: `{# comment #}` → `[# comment #]`
+- **Whitespace control**: `{%-` and `-%}` work with custom delimiters too
 
-### 🧠 **Full IDE Language Support**
-- **Syntax highlighting** with proper color coding for delimiters, keywords, strings, and expressions
-- **Code completion** for Jinja2 keywords, filters, and functions
-- **Error detection** and syntax validation
-- **Code formatting** with proper indentation and structure
-- **Find usages** and navigation for variables and macros
-- **Refactoring support** including variable renaming
+### 🧠 **IDE Language Support**
+- **Code formatting** - Perfect indentation and spacing using PyCharm Professional's formatter
+- **Code completion** for Jinja2 keywords, filters, and functions (via built-in Jinja2 support)
+- **Error detection** and syntax validation (via built-in Jinja2 support)
 
-### ⚡ **Advanced Features**
-- **Extract macro intention**: Convert selected Jinja2 code into reusable macros
-- **Live templates** for common Jinja2 patterns
-- **Performance optimization** with intelligent caching
-- **Hot reload**: Refresh delimiters without restarting IDE
-
-<!-- Plugin description -->
-Allows configuration of custom Jinja2 template delimiters while maintaining
-PyCharm's full Jinja2 language support including syntax highlighting,
-code completion, and formatting.
-<!-- Plugin description end -->
+### ⚠️ **Known Limitations**
+- **Syntax highlighting**: Files with custom delimiters won't have full syntax highlighting until formatted, as PyCharm's lexer expects standard Jinja2 delimiters. This is a trade-off for reliable code formatting.
+- **Recommended workflow**: Use standard Jinja2 extensions (`.j2`, `.jinja2`) and configure files to be recognized as "Jinja 2 Template" file type for best results.
 
 ## Installation
 
+### Requirements
+- **PyCharm Professional 2025.2+** OR
+- **IntelliJ IDEA Ultimate 2025.2+**
+
 ### From JetBrains Marketplace (Recommended)
-1. Open PyCharm/IntelliJ IDEA
+1. Open PyCharm Professional / IntelliJ IDEA Ultimate
 2. Go to <kbd>File</kbd> → <kbd>Settings</kbd> → <kbd>Plugins</kbd>
 3. Click <kbd>Marketplace</kbd> tab
 4. Search for "Jinja2 Custom Delimiters"
@@ -60,69 +54,71 @@ After installation, configure your custom delimiters:
 1. Go to <kbd>File</kbd> → <kbd>Settings</kbd> → <kbd>Languages & Frameworks</kbd> → <kbd>Jinja2 Custom Delimiters</kbd>
 2. Set your preferred delimiters:
    ```
-   Variable Start: <<        Variable End: >>
-   Block Start:    <%        Block End:    %>
-   Comment Start:  /*        Comment End:  */
+   Variable Start: [[        Variable End: ]]
+   Block Start:    [%        Block End:    %]
+   Comment Start:  [#        Comment End:  #]
    ```
 3. Click <kbd>Apply</kbd>
 
-### 2. Create Template Files
-Create files with supported extensions (`.j2`, `.jinja2`, `.html.j2`):
+<img src="assets/screenshots/jinja2-delimiters-settings.png" alt="Jinja2 Custom Delimiters Settings" width="800"/>
+
+### 2. Configure File Type Recognition
+For the plugin to format files with custom delimiters, they must be recognized as **Jinja2** language:
+
+**Option A - Automatic Recognition (Recommended)**
+Use these extensions:
+- `.jinja2` → Automatic
+- `.jinja` → Automatic
+- `.j2` → Automatic
+
+**Option B - Manual Configuration**
+For `.html` or other extensions:
+1. <kbd>Settings</kbd> → <kbd>Editor</kbd> → <kbd>File Types</kbd>
+2. Find "Jinja 2 Template"
+3. Click <kbd>+</kbd> under "File name patterns"
+4. Add `*.html` (or specific patterns like `template_*.html`)
+
+### 3. Create Template Files
+Create files with your custom delimiters:
 
 ```html
-<!-- Instead of default Jinja2 -->
-{{ user.name }}
-{% for item in items %}
-  {# This is a comment #}
-{% endfor %}
-
 <!-- Use your custom delimiters -->
-<< user.name >>
-<% for item in items %>
-  /* This is a comment */
-<% endfor %>
+[[ user.name ]]
+[% for item in items %]
+  [# This is a comment #]
+[% endfor %]
 ```
 
-### 3. Refresh (If Needed)
-If delimiters don't update immediately:
-- Use <kbd>Tools</kbd> → <kbd>Refresh Jinja2 Delimiters</kbd>
-- Or restart the IDE
+### 4. Format Your Code
+Press <kbd>Cmd+Alt+L</kbd> (Mac) or <kbd>Ctrl+Alt+L</kbd> (Windows/Linux) to automatically format your Jinja2 templates with perfect indentation and spacing!
 
-## Advanced Usage
-
-### Line-Based Syntax
-Enable line-based delimiters for cleaner templates:
-
-```
-Line Statement Prefix: #
-Line Comment Prefix:   ##
-```
-
-Then use:
+**Example:**
 ```html
-# for item in items
-  << item.name >>
-  ## This is a line comment
-# endfor
+<!-- Before formatting -->
+[%for item in items%]
+<li>[[item.name]]</li>
+[%endfor%]
+
+<!-- After formatting (Cmd+Alt+L) -->
+[% for item in items %]
+    <li>[[ item.name ]]</li>
+[% endfor %]
 ```
 
-### Extract Macro Refactoring
-1. Select Jinja2 code in your template
-2. Press <kbd>Alt</kbd> + <kbd>Enter</kbd>
-3. Choose "Extract Jinja2 macro"
-4. The plugin will create a macro and replace the selection with a macro call
+## How It Works
 
-### Supported File Types
-The plugin recognizes these file extensions:
-- `.j2` - Standard Jinja2 templates
-- `.jinja2` - Explicit Jinja2 templates
-- `.html.j2` - HTML templates with Jinja2
+The plugin uses a clever approach:
+1. **Pre-Format**: Converts your custom delimiters to standard Jinja2 (`[%` → `{%`)
+2. **Format**: Uses PyCharm Professional's battle-tested Jinja2 formatter
+3. **Post-Format**: Converts back to your custom delimiters (`{%` → `[%`)
+
+**Result**: Perfect formatting with your custom delimiters! ✨
 
 ## Use Cases
 
 ### 🔧 **Avoiding Conflicts**
 When using Jinja2 with:
-- **Vue.js/Angular**: Use `<< >>` instead of `{{ }}` to avoid frontend framework conflicts
+- **Vue.js/Angular**: Use `[[ ]]` instead of `{{ }}` to avoid frontend framework conflicts
 - **Liquid templates**: Use different delimiters to distinguish template engines
 - **Custom build systems**: Match your organization's template conventions
 
@@ -131,7 +127,23 @@ Perfect for:
 - **Django projects** with custom template configurations
 - **Flask applications** with non-standard Jinja2 setups
 - **Static site generators** with custom delimiter requirements
+- **FastBlocks** which uses custom delimiters by default
 - **Multi-template environments** where different delimiters clarify intent
+
+## Troubleshooting
+
+### Formatting Does Nothing
+**Check these:**
+1. Is file recognized as "Jinja2" language? (Check bottom-right corner of editor)
+2. Are custom delimiters configured in settings?
+3. Are you using PyCharm Professional or IntelliJ IDEA Ultimate? (Community editions don't have the Jinja2 formatter)
+
+### No Syntax Highlighting
+**Expected behavior** with this simplified plugin. Files with custom delimiters won't have full syntax highlighting until you format them at least once. This is a trade-off for reliable formatting.
+
+**Workarounds:**
+- Format the file once (<kbd>Cmd/Ctrl+Alt+L</kbd>) to help PyCharm understand the structure
+- Use standard `.j2` or `.jinja2` extensions for better automatic recognition
 
 ## Development
 
@@ -152,6 +164,30 @@ cd jinja2-custom-delimiters
 ./gradlew runIde
 ```
 
+## Technical Details
+
+The plugin uses a simplified architecture:
+- **IntelliJ Platform SDK** for IDE integration
+- **Pre/Post format processors** for delimiter conversion before/after formatting
+- **Persistent settings** with thread-safe access
+- Works directly with PyCharm's built-in Jinja2 language support
+- Only 4 Java source files - minimal complexity and maintenance
+
+**Architecture:**
+1. User edits file with custom delimiters (e.g., `[%` and `[[`)
+2. File must be recognized as "Jinja 2 Template" language
+3. When formatting (<kbd>Cmd/Ctrl+Alt+L</kbd>):
+   - **PreFormatProcessor** converts `[%` → `{%` in memory
+   - **PyCharm's Jinja2 formatter** formats the code
+   - **PostFormatProcessor** converts `{%` → `[%` back
+4. Result: Perfect formatting with custom delimiters preserved!
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/lesleslie/jinja2-custom-delimiters/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/lesleslie/jinja2-custom-delimiters/discussions)
+- **Email**: les@wedgwoodwebworks.com
+
 ## Contributing
 
 1. Fork the repository
@@ -161,12 +197,6 @@ cd jinja2-custom-delimiters
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
-
-## Support
-
-- **Issues**: [GitHub Issues](https://github.com/lesleslie/jinja2-custom-delimiters/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/lesleslie/jinja2-custom-delimiters/discussions)
-- **Email**: les@wedgwoodwebworks.com
 
 ## License
 

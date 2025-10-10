@@ -1,4 +1,4 @@
-package com.wedgwoodwebworks.jinja2delimiters.settings;
+package com.wedgwoodwebworks.jinja2customdelimiters.settings;
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 

@@ -1,4 +1,4 @@
-package com.wedgwoodwebworks.jinja2delimiters.settings;
+package com.wedgwoodwebworks.jinja2customdelimiters.settings;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -14,15 +14,16 @@ import org.jetbrains.annotations.Nullable;
 )
 public class Jinja2DelimitersSettings implements PersistentStateComponent<Jinja2DelimitersSettings> {
 
-    // Default Jinja2 delimiters
-    public String blockStartString = "{%";
-    public String blockEndString = "%}";
-    public String variableStartString = "{{";
-    public String variableEndString = "}}";
-    public String commentStartString = "{#";
-    public String commentEndString = "#}";
-    public String lineStatementPrefix = "";
-    public String lineCommentPrefix = "";
+    // Volatile fields for thread-safe publication
+    // These are public for XML serialization but should be accessed via getters
+    public volatile String blockStartString = "{%";
+    public volatile String blockEndString = "%}";
+    public volatile String variableStartString = "{{";
+    public volatile String variableEndString = "}}";
+    public volatile String commentStartString = "{#";
+    public volatile String commentEndString = "#}";
+    public volatile String lineStatementPrefix = "";
+    public volatile String lineCommentPrefix = "";
 
     public static Jinja2DelimitersSettings getInstance() {
         return ApplicationManager.getApplication().getService(Jinja2DelimitersSettings.class);
@@ -30,16 +31,90 @@ public class Jinja2DelimitersSettings implements PersistentStateComponent<Jinja2
 
     @Nullable
     @Override
-    public Jinja2DelimitersSettings getState() {
+    public synchronized Jinja2DelimitersSettings getState() {
         return this;
     }
 
     @Override
-    public void loadState(@NotNull Jinja2DelimitersSettings state) {
+    public synchronized void loadState(@NotNull Jinja2DelimitersSettings state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 
-    public boolean isUsingCustomDelimiters() {
+    // Thread-safe getters
+    @NotNull
+    public String getBlockStartString() {
+        return blockStartString != null ? blockStartString : "{%";
+    }
+
+    @NotNull
+    public String getBlockEndString() {
+        return blockEndString != null ? blockEndString : "%}";
+    }
+
+    @NotNull
+    public String getVariableStartString() {
+        return variableStartString != null ? variableStartString : "{{";
+    }
+
+    @NotNull
+    public String getVariableEndString() {
+        return variableEndString != null ? variableEndString : "}}";
+    }
+
+    @NotNull
+    public String getCommentStartString() {
+        return commentStartString != null ? commentStartString : "{#";
+    }
+
+    @NotNull
+    public String getCommentEndString() {
+        return commentEndString != null ? commentEndString : "#}";
+    }
+
+    @NotNull
+    public String getLineStatementPrefix() {
+        return lineStatementPrefix != null ? lineStatementPrefix : "";
+    }
+
+    @NotNull
+    public String getLineCommentPrefix() {
+        return lineCommentPrefix != null ? lineCommentPrefix : "";
+    }
+
+    // Thread-safe setters
+    public synchronized void setBlockStartString(@NotNull String value) {
+        this.blockStartString = value;
+    }
+
+    public synchronized void setBlockEndString(@NotNull String value) {
+        this.blockEndString = value;
+    }
+
+    public synchronized void setVariableStartString(@NotNull String value) {
+        this.variableStartString = value;
+    }
+
+    public synchronized void setVariableEndString(@NotNull String value) {
+        this.variableEndString = value;
+    }
+
+    public synchronized void setCommentStartString(@NotNull String value) {
+        this.commentStartString = value;
+    }
+
+    public synchronized void setCommentEndString(@NotNull String value) {
+        this.commentEndString = value;
+    }
+
+    public synchronized void setLineStatementPrefix(@NotNull String value) {
+        this.lineStatementPrefix = value;
+    }
+
+    public synchronized void setLineCommentPrefix(@NotNull String value) {
+        this.lineCommentPrefix = value;
+    }
+
+    public synchronized boolean isUsingCustomDelimiters() {
         return !safeEquals("{%", blockStartString) ||
                !safeEquals("%}", blockEndString) ||
                !safeEquals("{{", variableStartString) ||
@@ -52,7 +127,6 @@ public class Jinja2DelimitersSettings implements PersistentStateComponent<Jinja2
 
     private boolean safeEquals(String expected, String actual) {
         if (actual == null) {
-            // Treat null as equivalent to the default value
             return true;
         }
         return expected.equals(actual);

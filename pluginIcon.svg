@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <!-- Jinja2-style brackets -->
+  <path fill="#3DDC84" d="M8,5 L8,10 L5,10 L5,30 L8,30 L8,35 L2,35 L2,5 L8,5 Z M32,5 L38,5 L38,35 L32,35 L32,30 L35,30 L35,10 L32,10 L32,5 Z"/>
+
+  <!-- "J2" text -->
+  <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#3DDC84" text-anchor="middle">J2</text>
+</svg>

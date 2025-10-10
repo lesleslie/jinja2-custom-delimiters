@@ -7,3 +7,21 @@
 build
 /src_orig/
 /build/
+/.claude/
+
+# Temporary working files
+*-SUMMARY.md
+*-APPROACH*.md
+*-FIX*.md
+*-GUIDE.md
+*-ENABLED.md
+*-COMPLETE.md
+*-UPDATE.md
+*-RELEASE.md
+*-TESTING.md
+*-ISSUE.md
+test-*.md
+testing.html*
+CRITICAL-*.md
+AGENTS.md
+QWEN.md

@@ -6,13 +6,13 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilderFactory;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-import com.wedgwoodwebworks.jinja2delimiters.lang.CustomJinja2Language;
-import com.wedgwoodwebworks.jinja2delimiters.lang.CustomJinja2ParserDefinition;
-import com.wedgwoodwebworks.jinja2delimiters.lexer.CustomJinja2Lexer;
-import com.wedgwoodwebworks.jinja2delimiters.lexer.Jinja2TokenTypes;
-import com.wedgwoodwebworks.jinja2delimiters.parser.CustomJinja2Parser;
-import com.wedgwoodwebworks.jinja2delimiters.parser.Jinja2ElementTypes;
-import com.wedgwoodwebworks.jinja2delimiters.settings.Jinja2DelimitersSettings;
+import com.wedgwoodwebworks.jinja2customdelimiters.lang.CustomJinja2Language;
+import com.wedgwoodwebworks.jinja2customdelimiters.lang.CustomJinja2ParserDefinition;
+import com.wedgwoodwebworks.jinja2customdelimiters.lexer.CustomJinja2Lexer;
+import com.wedgwoodwebworks.jinja2customdelimiters.lexer.Jinja2TokenTypes;
+import com.wedgwoodwebworks.jinja2customdelimiters.parser.CustomJinja2Parser;
+import com.wedgwoodwebworks.jinja2customdelimiters.parser.Jinja2ElementTypes;
+import com.wedgwoodwebworks.jinja2customdelimiters.settings.Jinja2DelimitersSettings;
 
 public class CustomJinja2ParserTest extends BasePlatformTestCase {
 

@@ -1,4 +1,4 @@
-package com.wedgwoodwebworks.jinja2delimiters.settings;
+package com.wedgwoodwebworks.jinja2customdelimiters.settings;
 
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Insets;
 
 public class Jinja2DelimitersConfigurable implements Configurable {
 
@@ -101,15 +102,19 @@ public class Jinja2DelimitersConfigurable implements Configurable {
 
         // Help text
         gbc.gridx = 0; gbc.gridy = 9; gbc.gridwidth = 2; gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(15, 0, 5, 0); // Add top spacing
         JTextArea helpText = new JTextArea(
             "Configure custom delimiters for Jinja2 templates.\n" +
             "Leave line prefixes empty to disable line-based syntax.\n" +
+            "Code formatting (Cmd/Ctrl+Alt+L) requires PyCharm Professional or IntelliJ IDEA Ultimate.\n" +
             "Changes will take effect after restarting the IDE or refreshing files."
         );
         helpText.setEditable(false);
         helpText.setOpaque(false);
         helpText.setWrapStyleWord(true);
         helpText.setLineWrap(true);
+        helpText.setFont(helpText.getFont().deriveFont(Font.PLAIN, helpText.getFont().getSize() - 1));
+        helpText.setForeground(UIManager.getColor("Label.disabledForeground"));
         mainPanel.add(helpText, gbc);
     }
 
@@ -127,39 +132,39 @@ public class Jinja2DelimitersConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         Jinja2DelimitersSettings settings = Jinja2DelimitersSettings.getInstance();
-        return !blockStartField.getText().equals(settings.blockStartString) ||
-               !blockEndField.getText().equals(settings.blockEndString) ||
-               !variableStartField.getText().equals(settings.variableStartString) ||
-               !variableEndField.getText().equals(settings.variableEndString) ||
-               !commentStartField.getText().equals(settings.commentStartString) ||
-               !commentEndField.getText().equals(settings.commentEndString) ||
-               !lineStatementPrefixField.getText().equals(settings.lineStatementPrefix) ||
-               !lineCommentPrefixField.getText().equals(settings.lineCommentPrefix);
+        return !blockStartField.getText().equals(settings.getBlockStartString()) ||
+               !blockEndField.getText().equals(settings.getBlockEndString()) ||
+               !variableStartField.getText().equals(settings.getVariableStartString()) ||
+               !variableEndField.getText().equals(settings.getVariableEndString()) ||
+               !commentStartField.getText().equals(settings.getCommentStartString()) ||
+               !commentEndField.getText().equals(settings.getCommentEndString()) ||
+               !lineStatementPrefixField.getText().equals(settings.getLineStatementPrefix()) ||
+               !lineCommentPrefixField.getText().equals(settings.getLineCommentPrefix());
     }
 
     @Override
     public void apply() throws ConfigurationException {
         Jinja2DelimitersSettings settings = Jinja2DelimitersSettings.getInstance();
-        settings.blockStartString = blockStartField.getText();
-        settings.blockEndString = blockEndField.getText();
-        settings.variableStartString = variableStartField.getText();
-        settings.variableEndString = variableEndField.getText();
-        settings.commentStartString = commentStartField.getText();
-        settings.commentEndString = commentEndField.getText();
-        settings.lineStatementPrefix = lineStatementPrefixField.getText();
-        settings.lineCommentPrefix = lineCommentPrefixField.getText();
+        settings.setBlockStartString(blockStartField.getText());
+        settings.setBlockEndString(blockEndField.getText());
+        settings.setVariableStartString(variableStartField.getText());
+        settings.setVariableEndString(variableEndField.getText());
+        settings.setCommentStartString(commentStartField.getText());
+        settings.setCommentEndString(commentEndField.getText());
+        settings.setLineStatementPrefix(lineStatementPrefixField.getText());
+        settings.setLineCommentPrefix(lineCommentPrefixField.getText());
     }
 
     @Override
     public void reset() {
         Jinja2DelimitersSettings settings = Jinja2DelimitersSettings.getInstance();
-        blockStartField.setText(settings.blockStartString);
-        blockEndField.setText(settings.blockEndString);
-        variableStartField.setText(settings.variableStartString);
-        variableEndField.setText(settings.variableEndString);
-        commentStartField.setText(settings.commentStartString);
-        commentEndField.setText(settings.commentEndString);
-        lineStatementPrefixField.setText(settings.lineStatementPrefix);
-        lineCommentPrefixField.setText(settings.lineCommentPrefix);
+        blockStartField.setText(settings.getBlockStartString());
+        blockEndField.setText(settings.getBlockEndString());
+        variableStartField.setText(settings.getVariableStartString());
+        variableEndField.setText(settings.getVariableEndString());
+        commentStartField.setText(settings.getCommentStartString());
+        commentEndField.setText(settings.getCommentEndString());
+        lineStatementPrefixField.setText(settings.getLineStatementPrefix());
+        lineCommentPrefixField.setText(settings.getLineCommentPrefix());
     }
 }
