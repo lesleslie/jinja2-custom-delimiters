@@ -1,0 +1,4 @@
+<idea-plugin>
+  <!-- Extensions specific to PyCharm Professional (Pythonid) -->
+  <!-- Currently empty as all features work with base Python support -->
+</idea-plugin>
