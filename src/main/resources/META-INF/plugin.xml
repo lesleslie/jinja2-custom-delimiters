@@ -4,6 +4,21 @@
   <vendor email="les@wedgwoodwebworks.com" url="https://wedgwoodwebworks.com">Wedgwood Web Works</vendor>
   <product-descriptor code="PJINJACUSTOMDEL" release-date="20251203" release-version="10"/>
 
+  <!-- Marketplace Tags for Better Discoverability -->
+  <category>Languages</category>
+  <tags>
+    <tag>jinja2</tag>
+    <tag>template</tag>
+    <tag>formatting</tag>
+    <tag>python</tag>
+    <tag>django</tag>
+    <tag>flask</tag>
+    <tag>web</tag>
+    <tag>html</tag>
+    <tag>templating</tag>
+    <tag>delimiters</tag>
+  </tags>
+
   <description><![CDATA[
     Allows configuration of custom Jinja2 template delimiters while maintaining
     syntax highlighting, code completion, and other IDE features.
@@ -18,16 +33,15 @@
   ]]></description>
 
   <change-notes><![CDATA[
-    <h2>[Unreleased]</h2>
+    <h2>1.0.1</h2>
     <h3>Added</h3>
     <ul>
-        <li>Initial scaffold created from <a href="https://thub.com/JetBrains/intellij-platform-plugin-template">IntelliJ Platform Plugin Template</a></li>
+        <li>Initial scaffold created from <a href="https://github.com/JetBrains/intellij-platform-plugin-template">IntelliJ Platform Plugin Template</a></li>
     </ul>
   ]]>
   </change-notes>
 
   <depends>com.intellij.modules.python</depends>
-  <depends optional="true" config-file="pythonid.xml">Pythonid</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Settings -->

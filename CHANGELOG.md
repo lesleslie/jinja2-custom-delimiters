@@ -4,6 +4,52 @@
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-12-03
+
+### Added
+
+- **Input validation for settings UI** - Comprehensive validation prevents invalid delimiter configurations
+  - Empty delimiter detection
+  - Maximum length validation (10 characters)
+  - Duplicate delimiter detection
+  - Overlapping delimiter detection (substring conflicts)
+  - Clear error messages guide users to fix issues
+- **Error handling in format processors** - Robust error handling prevents formatter crashes
+  - Try-catch blocks wrap all processing logic
+  - Errors logged but don't interrupt formatting workflow
+  - Graceful fallback to original content on errors
+- **Debug logging throughout plugin** - Comprehensive logging aids troubleshooting
+  - Pre/PostFormatProcessor operations logged
+  - Delimiter conversion tracking
+  - File type detection logging
+  - Settings usage logging
+  - Enable via: Help → Diagnostic Tools → Debug Log Settings → `#com.wedgwoodwebworks.jinja2customdelimiters`
+
+### Fixed
+
+- Build configuration compatibility with Gradle 9.1.0
+- Added `pluginUntilBuild` configuration for version compatibility (252 to 253.*)
+- Removed unnecessary `pythonid.xml` dependency
+- Fixed GitHub link in plugin.xml change-notes
+- Corrected product descriptor release version to match plugin version
+- Test code now uses thread-safe getters/setters (76 field accesses updated)
+- Removed obsolete test files for deleted lexer/parser features
+- Fixed test service initialization to work with IntelliJ test framework
+- Updated test to properly validate null rejection behavior
+
+### Changed
+
+- Broadened platform version to 2025.2 for better compatibility across 2025.2.x releases
+- Added marketplace tags for improved discoverability (jinja2, template, formatting, python, django, flask, web, html, templating, delimiters)
+- Settings now trim whitespace from delimiter inputs
+
+### Improved
+
+- Plugin metadata and version consistency across all configuration files
+- Code quality with comprehensive error handling
+- Debugging capabilities with detailed logging
+- User experience with input validation and helpful error messages
+
 ## [0.3.0] - 2025-10-10
 
 ### Changed
