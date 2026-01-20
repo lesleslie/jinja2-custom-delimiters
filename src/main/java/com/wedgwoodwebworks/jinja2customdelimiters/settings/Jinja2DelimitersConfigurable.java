@@ -106,7 +106,8 @@ public class Jinja2DelimitersConfigurable implements Configurable {
         JTextArea helpText = new JTextArea(
             "Configure custom delimiters for Jinja2 templates.\n" +
             "Leave line prefixes empty to disable line-based syntax.\n" +
-            "Code formatting (Cmd/Ctrl+Alt+L) requires PyCharm Professional or IntelliJ IDEA Ultimate.\n" +
+            "Note: line prefixes are stored but not applied during formatting.\n" +
+            "Code formatting (Cmd/Ctrl+Alt+L) requires PyCharm Professional.\n" +
             "Changes will take effect after restarting the IDE or refreshing files."
         );
         helpText.setEditable(false);

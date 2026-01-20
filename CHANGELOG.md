@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-01-19
+
+### Fixed
+
+- Removed explicit Python bundled module declaration to match PyCharm platform packaging
+
+## [1.0.2] - 2026-01-19
+
+### Changed
+
+- Clarified PyCharm Professional-only support in documentation and plugin metadata
+- Documented line-prefix behavior (stored settings, not applied during formatting)
+- Scoped plugin verification to PyCharm Professional release builds
+
 ## [1.0.1] - 2025-12-03
 
 ### Added

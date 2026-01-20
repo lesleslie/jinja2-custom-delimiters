@@ -6,25 +6,12 @@
 
   <!-- Marketplace Tags for Better Discoverability -->
   <category>Languages</category>
-  <tags>
-    <tag>jinja2</tag>
-    <tag>template</tag>
-    <tag>formatting</tag>
-    <tag>python</tag>
-    <tag>django</tag>
-    <tag>flask</tag>
-    <tag>web</tag>
-    <tag>html</tag>
-    <tag>templating</tag>
-    <tag>delimiters</tag>
-  </tags>
-
   <description><![CDATA[
     Allows configuration of custom Jinja2 template delimiters while maintaining
     syntax highlighting, code completion, and other IDE features.
     <br><br>
     <strong>Code Formatting:</strong> Automatic code reformatting requires
-    <strong>PyCharm Professional</strong> or <strong>IntelliJ IDEA Ultimate</strong>.
+    <strong>PyCharm Professional</strong>.
     Community editions support syntax highlighting and other features, but not formatting.
     <br><br>
     <img src="https://raw.githubusercontent.com/lesleslie/jinja2-custom-delimiters/assets/screenshots/jinja2-delimiters-settings.png"
@@ -33,13 +20,13 @@
   ]]></description>
 
   <change-notes><![CDATA[
-    <h2>1.0.1</h2>
-    <h3>Added</h3>
+    <h2>1.0.2</h2>
+    <h3>Changed</h3>
     <ul>
-        <li>Initial scaffold created from <a href="https://github.com/JetBrains/intellij-platform-plugin-template">IntelliJ Platform Plugin Template</a></li>
+        <li>Clarified PyCharm Professional-only support and updated verification scope.</li>
+        <li>Documented line-prefix behavior and release metadata alignment.</li>
     </ul>
-  ]]>
-  </change-notes>
+  ]]></change-notes>
 
   <depends>com.intellij.modules.python</depends>
 

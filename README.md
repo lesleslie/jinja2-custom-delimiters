@@ -1,9 +1,9 @@
 # Jinja2 Custom Delimiters
 
 <!-- Plugin description -->
-**A PyCharm Professional / IntelliJ IDEA Ultimate plugin** that allows you to configure custom Jinja2 template delimiters while maintaining full IDE language support including syntax highlighting, code completion, and formatting.
+**A PyCharm Professional plugin** that allows you to configure custom Jinja2 template delimiters while maintaining full IDE language support including syntax highlighting, code completion, and formatting.
 
-> **⚠️ Requires PyCharm Professional or IntelliJ IDEA Ultimate**
+> **⚠️ Requires PyCharm Professional**
 > This plugin leverages PyCharm Professional's built-in Jinja2 formatter for perfect code formatting with custom delimiters.
 <!-- Plugin description end -->
 
@@ -27,15 +27,15 @@ Jinja2's default delimiters (`{{`, `{%`, `{#`) can conflict with other template 
 ### ⚠️ **Known Limitations**
 - **Syntax highlighting**: Files with custom delimiters won't have full syntax highlighting until formatted, as PyCharm's lexer expects standard Jinja2 delimiters. This is a trade-off for reliable code formatting.
 - **Recommended workflow**: Use standard Jinja2 extensions (`.j2`, `.jinja2`) and configure files to be recognized as "Jinja 2 Template" file type for best results.
+- **Line prefixes**: Line statement/comment prefixes are stored in settings but are not applied during formatting.
 
 ## Installation
 
 ### Requirements
-- **PyCharm Professional 2025.2+** OR
-- **IntelliJ IDEA Ultimate 2025.2+**
+- **PyCharm Professional 2025.2+**
 
 ### From JetBrains Marketplace (Recommended)
-1. Open PyCharm Professional / IntelliJ IDEA Ultimate
+1. Open PyCharm Professional
 2. Go to <kbd>File</kbd> → <kbd>Settings</kbd> → <kbd>Plugins</kbd>
 3. Click <kbd>Marketplace</kbd> tab
 4. Search for "Jinja2 Custom Delimiters"
@@ -136,7 +136,7 @@ Perfect for:
 **Check these:**
 1. Is file recognized as "Jinja2" language? (Check bottom-right corner of editor)
 2. Are custom delimiters configured in settings?
-3. Are you using PyCharm Professional or IntelliJ IDEA Ultimate? (Community editions don't have the Jinja2 formatter)
+3. Are you using PyCharm Professional? (Community editions don't have the Jinja2 formatter)
 
 ### No Syntax Highlighting
 **Expected behavior** with this simplified plugin. Files with custom delimiters won't have full syntax highlighting until you format them at least once. This is a trade-off for reliable formatting.

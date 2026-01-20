@@ -1,6 +1,8 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 
 plugins {
     id("java") // Java support
@@ -106,7 +108,12 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            recommended()
+            select {
+                types = listOf(IntelliJPlatformType.PyCharmProfessional)
+                channels = listOf(ProductRelease.Channel.RELEASE)
+                sinceBuild = providers.gradleProperty("pluginSinceBuild").get()
+                untilBuild = providers.gradleProperty("pluginUntilBuild").get()
+            }
         }
     }
 }
