@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+For a shorter, tool-neutral bootstrap document, start with `AGENTS.md`.
+
 ## Project Overview
 
 This is an IntelliJ IDEA/PyCharm plugin that enables custom Jinja2 template delimiters while maintaining code formatting support. The plugin uses a simplified architecture with Pre/PostFormatProcessors that convert custom delimiters before and after PyCharm Professional's built-in Jinja2 formatter runs.

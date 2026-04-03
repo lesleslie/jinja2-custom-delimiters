@@ -1,0 +1,9 @@
+<idea-plugin>
+  <id>com.wedgwoodwebworks.jinja2customdelimiters.test</id>
+  <name>Jinja2 Custom Delimiters Test</name>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <applicationService
+        serviceImplementation="com.wedgwoodwebworks.jinja2customdelimiters.settings.Jinja2DelimitersSettings"/>
+  </extensions>
+</idea-plugin>
