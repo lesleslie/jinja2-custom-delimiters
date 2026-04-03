@@ -9,6 +9,10 @@
 ### Fixed
 
 - Removed explicit Python bundled module declaration to match PyCharm platform packaging
+- Allowed overlapping custom delimiter prefixes when each configured delimiter token remains distinct
+- Rejected null settings values consistently in the persistent settings service
+- Aligned Marketplace and README feature descriptions with the plugin's formatter-focused scope
+- Added JetBrains Marketplace license verification and gated paid features accordingly
 
 ## [1.0.2] - 2026-01-19
 

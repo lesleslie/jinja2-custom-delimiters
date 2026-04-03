@@ -9,6 +9,7 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.codeStyle.PreFormatProcessor;
+import com.wedgwoodwebworks.jinja2customdelimiters.licensing.LicenseGate;
 import com.wedgwoodwebworks.jinja2customdelimiters.settings.Jinja2DelimitersSettings;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,45 +61,30 @@ public class CustomJinja2PreFormatProcessor implements PreFormatProcessor {
                 LOG.debug("PreFormatProcessor: Processing Jinja2 file: " + file.getName());
             }
 
+            if (!LicenseGate.ensureLicensed("custom Jinja2 delimiter formatting")) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("PreFormatProcessor: Skipping formatting because the plugin is not licensed");
+                }
+                return range;
+            }
+
             Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
             if (document == null) {
                 LOG.warn("PreFormatProcessor: Document is null for file: " + file.getName());
                 return range;
             }
 
-            // Get custom delimiter settings
             Jinja2DelimitersSettings settings = Jinja2DelimitersSettings.getInstance();
 
-            String blockStart = settings.getBlockStartString();
-            String blockEnd = settings.getBlockEndString();
-            String variableStart = settings.getVariableStartString();
-            String variableEnd = settings.getVariableEndString();
-            String commentStart = settings.getCommentStartString();
-            String commentEnd = settings.getCommentEndString();
-
             if (LOG.isDebugEnabled()) {
-                LOG.debug("PreFormatProcessor: Using delimiters - block: " + blockStart + "/" + blockEnd +
-                         ", variable: " + variableStart + "/" + variableEnd +
-                         ", comment: " + commentStart + "/" + commentEnd);
+                LOG.debug("PreFormatProcessor: Using delimiters - block: " + settings.getBlockStartString() + "/" + settings.getBlockEndString() +
+                         ", variable: " + settings.getVariableStartString() + "/" + settings.getVariableEndString() +
+                         ", comment: " + settings.getCommentStartString() + "/" + settings.getCommentEndString());
             }
 
             // Get the text in the range
             String text = document.getText(range);
-
-            // Convert custom delimiters to standard Jinja2 delimiters
-            String converted = text;
-
-            // Block delimiters with whitespace control
-            converted = replaceWithWhitespaceControl(converted, blockStart, "{%");
-            converted = replaceWithWhitespaceControl(converted, blockEnd, "%}");
-
-            // Variable delimiters with whitespace control
-            converted = replaceWithWhitespaceControl(converted, variableStart, "{{");
-            converted = replaceWithWhitespaceControl(converted, variableEnd, "}}");
-
-            // Comment delimiters with whitespace control
-            converted = replaceWithWhitespaceControl(converted, commentStart, "{#");
-            converted = replaceWithWhitespaceControl(converted, commentEnd, "#}");
+            String converted = DelimiterConversionUtil.convertCustomToStandard(text, settings);
 
             // If text changed, update the document
             if (!text.equals(converted)) {
@@ -137,38 +123,4 @@ public class CustomJinja2PreFormatProcessor implements PreFormatProcessor {
         }
     }
 
-    /**
-     * Replace custom delimiter with standard delimiter, preserving whitespace control characters.
-     *
-     * Examples:
-     * - "[%" → "{%"
-     * - "[%-" → "{%-"
-     * - "[%+" → "{%+"
-     * - "-%]" → "-%}"
-     * - "+%]" → "+%}"
-     */
-    private String replaceWithWhitespaceControl(String text, String customDelim, String standardDelim) {
-        if (customDelim.equals(standardDelim)) {
-            return text; // No conversion needed
-        }
-
-        String result = text;
-
-        // For opening delimiters (e.g., "[%" → "{%")
-        if (standardDelim.equals("{%") || standardDelim.equals("{{") || standardDelim.equals("{#")) {
-            // Handle: [%-, [%+, [%
-            result = result.replace(customDelim + "-", standardDelim + "-");
-            result = result.replace(customDelim + "+", standardDelim + "+");
-            result = result.replace(customDelim, standardDelim);
-        }
-        // For closing delimiters (e.g., "%]" → "%}")
-        else if (standardDelim.equals("%}") || standardDelim.equals("}}") || standardDelim.equals("#}")) {
-            // Handle: -%], +%], %]
-            result = result.replace("-" + customDelim, "-" + standardDelim);
-            result = result.replace("+" + customDelim, "+" + standardDelim);
-            result = result.replace(customDelim, standardDelim);
-        }
-
-        return result;
-    }
 }

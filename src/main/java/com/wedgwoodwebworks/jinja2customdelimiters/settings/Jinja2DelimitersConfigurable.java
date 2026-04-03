@@ -3,6 +3,8 @@ package com.wedgwoodwebworks.jinja2customdelimiters.settings;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.util.NlsContexts;
+import com.wedgwoodwebworks.jinja2customdelimiters.licensing.LicenseGate;
+import com.wedgwoodwebworks.jinja2customdelimiters.licensing.MarketplaceLicenseChecker;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +24,7 @@ public class Jinja2DelimitersConfigurable implements Configurable {
     private JTextField lineStatementPrefixField;
     private JTextField lineCommentPrefixField;
     private JButton resetDefaultsButton;
+    private JPanel unlicensedPanel;
 
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
@@ -32,10 +35,41 @@ public class Jinja2DelimitersConfigurable implements Configurable {
     @Nullable
     @Override
     public JComponent createComponent() {
+        if (!LicenseGate.isLicensedOrPending()) {
+            if (unlicensedPanel == null) {
+                unlicensedPanel = createUnlicensedPanel();
+            }
+            return unlicensedPanel;
+        }
+
         if (mainPanel == null) {
             createUI();
         }
         return mainPanel;
+    }
+
+    private JPanel createUnlicensedPanel() {
+        JPanel panel = new JPanel(new BorderLayout(0, 12));
+
+        JTextArea message = new JTextArea(
+            "A valid JetBrains Marketplace license is required to configure Jinja2 Custom Delimiters.\n\n" +
+            "Activate your license to enable formatter integration and settings changes."
+        );
+        message.setEditable(false);
+        message.setOpaque(false);
+        message.setWrapStyleWord(true);
+        message.setLineWrap(true);
+
+        JButton activateButton = new JButton("Activate License");
+        activateButton.addActionListener(event ->
+            MarketplaceLicenseChecker.requestLicense(
+                "Activate Jinja2 Custom Delimiters to configure custom delimiters."
+            )
+        );
+
+        panel.add(message, BorderLayout.CENTER);
+        panel.add(activateButton, BorderLayout.NORTH);
+        return panel;
     }
 
     private void createUI() {
@@ -145,6 +179,10 @@ public class Jinja2DelimitersConfigurable implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
+        if (!LicenseGate.ensureLicensed("settings changes in Jinja2 Custom Delimiters")) {
+            throw new ConfigurationException("A valid JetBrains Marketplace license is required to apply these settings.");
+        }
+
         // Validate all delimiter inputs before applying
         validateDelimiter(blockStartField.getText(), "Block Start");
         validateDelimiter(blockEndField.getText(), "Block End");
@@ -157,8 +195,8 @@ public class Jinja2DelimitersConfigurable implements Configurable {
         validateLinePrefix(lineStatementPrefixField.getText(), "Line Statement Prefix");
         validateLinePrefix(lineCommentPrefixField.getText(), "Line Comment Prefix");
 
-        // Check for overlapping delimiters
-        checkOverlappingDelimiters();
+        // Check for delimiter conflicts that are fundamentally ambiguous
+        checkDelimiterConflicts();
 
         // Apply settings if all validations pass
         Jinja2DelimitersSettings settings = Jinja2DelimitersSettings.getInstance();
@@ -221,11 +259,15 @@ public class Jinja2DelimitersConfigurable implements Configurable {
     }
 
     /**
-     * Checks for overlapping delimiters that could cause parsing issues.
+     * Checks for delimiter conflicts that are fundamentally ambiguous.
      *
-     * @throws ConfigurationException if delimiters overlap
+     * Prefix overlaps are allowed because formatter conversion resolves the
+     * longest matching delimiter first, but each delimiter token must still be
+     * distinct to avoid ambiguous round-trip conversion.
+     *
+     * @throws ConfigurationException if delimiters are identical
      */
-    private void checkOverlappingDelimiters() throws ConfigurationException {
+    private void checkDelimiterConflicts() throws ConfigurationException {
         String[] delimiters = {
             blockStartField.getText().trim(),
             blockEndField.getText().trim(),
@@ -244,30 +286,11 @@ public class Jinja2DelimitersConfigurable implements Configurable {
             "Comment End"
         };
 
-        // Check for exact duplicates
         for (int i = 0; i < delimiters.length; i++) {
             for (int j = i + 1; j < delimiters.length; j++) {
                 if (delimiters[i].equals(delimiters[j])) {
                     throw new ConfigurationException(
                         names[i] + " and " + names[j] + " cannot be the same: \"" + delimiters[i] + "\""
-                    );
-                }
-            }
-        }
-
-        // Check for substring overlaps (one delimiter contains another)
-        for (int i = 0; i < delimiters.length; i++) {
-            for (int j = i + 1; j < delimiters.length; j++) {
-                if (delimiters[i].contains(delimiters[j]) && !delimiters[j].isEmpty()) {
-                    throw new ConfigurationException(
-                        names[i] + " (\"" + delimiters[i] + "\") contains " +
-                        names[j] + " (\"" + delimiters[j] + "\")"
-                    );
-                }
-                if (delimiters[j].contains(delimiters[i]) && !delimiters[i].isEmpty()) {
-                    throw new ConfigurationException(
-                        names[j] + " (\"" + delimiters[j] + "\") contains " +
-                        names[i] + " (\"" + delimiters[i] + "\")"
                     );
                 }
             }

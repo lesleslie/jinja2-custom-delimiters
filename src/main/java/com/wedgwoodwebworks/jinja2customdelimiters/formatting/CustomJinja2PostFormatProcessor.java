@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.impl.source.codeStyle.PostFormatProcessor;
+import com.wedgwoodwebworks.jinja2customdelimiters.licensing.LicenseGate;
 import com.wedgwoodwebworks.jinja2customdelimiters.settings.Jinja2DelimitersSettings;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,6 +52,13 @@ public class CustomJinja2PostFormatProcessor implements PostFormatProcessor {
                 LOG.debug("PostFormatProcessor: Processing Jinja2 file: " + file.getName());
             }
 
+            if (!LicenseGate.ensureLicensed("custom Jinja2 delimiter formatting")) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("PostFormatProcessor: Skipping formatting because the plugin is not licensed");
+                }
+                return source;
+            }
+
             Document document = PsiDocumentManager.getInstance(source.getProject()).getDocument(file);
             if (document != null) {
                 convertDelimiters(document, source.getTextRange(), file);
@@ -85,6 +93,13 @@ public class CustomJinja2PostFormatProcessor implements PostFormatProcessor {
                 return rangeToReformat;
             }
 
+            if (!LicenseGate.ensureLicensed("custom Jinja2 delimiter formatting")) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("PostFormatProcessor: Skipping range processing because the plugin is not licensed");
+                }
+                return rangeToReformat;
+            }
+
             Document document = PsiDocumentManager.getInstance(source.getProject()).getDocument(source);
             if (document == null) {
                 LOG.warn("PostFormatProcessor: Document is null for file: " + source.getName());
@@ -100,39 +115,17 @@ public class CustomJinja2PostFormatProcessor implements PostFormatProcessor {
     }
 
     private TextRange convertDelimiters(Document document, TextRange range, PsiFile file) {
-        // Get custom delimiter settings
         Jinja2DelimitersSettings delimSettings = Jinja2DelimitersSettings.getInstance();
 
-        String blockStart = delimSettings.getBlockStartString();
-        String blockEnd = delimSettings.getBlockEndString();
-        String variableStart = delimSettings.getVariableStartString();
-        String variableEnd = delimSettings.getVariableEndString();
-        String commentStart = delimSettings.getCommentStartString();
-        String commentEnd = delimSettings.getCommentEndString();
-
         if (LOG.isDebugEnabled()) {
-            LOG.debug("PostFormatProcessor: Using delimiters - block: " + blockStart + "/" + blockEnd +
-                     ", variable: " + variableStart + "/" + variableEnd +
-                     ", comment: " + commentStart + "/" + commentEnd);
+            LOG.debug("PostFormatProcessor: Using delimiters - block: " + delimSettings.getBlockStartString() + "/" + delimSettings.getBlockEndString() +
+                     ", variable: " + delimSettings.getVariableStartString() + "/" + delimSettings.getVariableEndString() +
+                     ", comment: " + delimSettings.getCommentStartString() + "/" + delimSettings.getCommentEndString());
         }
 
         // Get the text in the range
         String text = document.getText(range);
-
-        // Convert standard Jinja2 delimiters back to custom delimiters
-        String converted = text;
-
-        // Block delimiters with whitespace control
-        converted = replaceWithWhitespaceControl(converted, "{%", blockStart);
-        converted = replaceWithWhitespaceControl(converted, "%}", blockEnd);
-
-        // Variable delimiters with whitespace control
-        converted = replaceWithWhitespaceControl(converted, "{{", variableStart);
-        converted = replaceWithWhitespaceControl(converted, "}}", variableEnd);
-
-        // Comment delimiters with whitespace control
-        converted = replaceWithWhitespaceControl(converted, "{#", commentStart);
-        converted = replaceWithWhitespaceControl(converted, "#}", commentEnd);
+        String converted = DelimiterConversionUtil.convertStandardToCustom(text, delimSettings);
 
         // If text changed, update the document
         if (!text.equals(converted)) {
@@ -165,38 +158,4 @@ public class CustomJinja2PostFormatProcessor implements PostFormatProcessor {
         return range;
     }
 
-    /**
-     * Replace standard delimiter with custom delimiter, preserving whitespace control characters.
-     *
-     * Examples:
-     * - "{%" → "[%"
-     * - "{%-" → "[%-"
-     * - "{%+" → "[%+"
-     * - "-%}" → "-%]"
-     * - "+%}" → "+%]"
-     */
-    private String replaceWithWhitespaceControl(String text, String standardDelim, String customDelim) {
-        if (customDelim.equals(standardDelim)) {
-            return text; // No conversion needed
-        }
-
-        String result = text;
-
-        // For opening delimiters (e.g., "{%" → "[%")
-        if (standardDelim.equals("{%") || standardDelim.equals("{{") || standardDelim.equals("{#")) {
-            // Handle: {%-, {%+, {%
-            result = result.replace(standardDelim + "-", customDelim + "-");
-            result = result.replace(standardDelim + "+", customDelim + "+");
-            result = result.replace(standardDelim, customDelim);
-        }
-        // For closing delimiters (e.g., "%}" → "%]")
-        else if (standardDelim.equals("%}") || standardDelim.equals("}}") || standardDelim.equals("#}")) {
-            // Handle: -%}, +%}, %}
-            result = result.replace("-" + standardDelim, "-" + customDelim);
-            result = result.replace("+" + standardDelim, "+" + customDelim);
-            result = result.replace(standardDelim, customDelim);
-        }
-
-        return result;
-    }
 }

@@ -1,15 +1,21 @@
 # Jinja2 Custom Delimiters
 
+[![Code style: crackerjack](https://img.shields.io/badge/code%20style-crackerjack-000042)](https://github.com/lesleslie/crackerjack)
+[![Java: 21+](https://img.shields.io/badge/java-21%2B-orange)](https://openjdk.org/projects/jdk/21/)
+
 <!-- Plugin description -->
-**A PyCharm Professional plugin** that allows you to configure custom Jinja2 template delimiters while maintaining full IDE language support including syntax highlighting, code completion, and formatting.
+**A PyCharm Professional plugin** that allows you to configure custom Jinja2 template delimiters while preserving PyCharm's built-in Jinja2 formatting workflow.
 
 > **⚠️ Requires PyCharm Professional**
 > This plugin leverages PyCharm Professional's built-in Jinja2 formatter for perfect code formatting with custom delimiters.
+>
+> **Paid Plugin**
+> A valid JetBrains Marketplace license is required to use the plugin's settings and formatting features.
 <!-- Plugin description end -->
 
 ## Why This Plugin?
 
-Jinja2's default delimiters (`{{`, `{%`, `{#`) can conflict with other template engines or frontend frameworks. This plugin lets you use custom delimiters (like `[%`, `[[`, `[#`) while preserving all of PyCharm Professional's powerful Jinja2 features.
+Jinja2's default delimiters (`{{`, `{%`, `{#`) can conflict with other template engines or frontend frameworks. This plugin lets you use custom delimiters (like `[%`, `[[`, `[#`) while preserving PyCharm Professional's built-in Jinja2 formatter.
 
 ## Features
 
@@ -19,13 +25,13 @@ Jinja2's default delimiters (`{{`, `{%`, `{#`) can conflict with other template 
 - **Comment delimiters**: `{# comment #}` → `[# comment #]`
 - **Whitespace control**: `{%-` and `-%}` work with custom delimiters too
 
-### 🧠 **IDE Language Support**
-- **Code formatting** - Perfect indentation and spacing using PyCharm Professional's formatter
-- **Code completion** for Jinja2 keywords, filters, and functions (via built-in Jinja2 support)
-- **Error detection** and syntax validation (via built-in Jinja2 support)
+### 🧠 **Formatter Integration**
+- **Code formatting** - Uses PyCharm Professional's formatter after temporary delimiter conversion
+- **Delimiter persistence** - Stores custom block, variable, comment, and line-prefix settings
+- **Whitespace control** - Preserves Jinja2 whitespace control markers like `{%-` and `-%}`
 
 ### ⚠️ **Known Limitations**
-- **Syntax highlighting**: Files with custom delimiters won't have full syntax highlighting until formatted, as PyCharm's lexer expects standard Jinja2 delimiters. This is a trade-off for reliable code formatting.
+- **Syntax highlighting and completion**: This plugin does not provide its own lexer, parser, or completion engine. Custom-delimiter files still depend on PyCharm's native Jinja2 recognition.
 - **Recommended workflow**: Use standard Jinja2 extensions (`.j2`, `.jinja2`) and configure files to be recognized as "Jinja 2 Template" file type for best results.
 - **Line prefixes**: Line statement/comment prefixes are stored in settings but are not applied during formatting.
 
@@ -33,6 +39,7 @@ Jinja2's default delimiters (`{{`, `{%`, `{#`) can conflict with other template 
 
 ### Requirements
 - **PyCharm Professional 2025.2+**
+- **Valid JetBrains Marketplace license for Jinja2 Custom Delimiters**
 
 ### From JetBrains Marketplace (Recommended)
 1. Open PyCharm Professional
@@ -60,7 +67,7 @@ After installation, configure your custom delimiters:
    ```
 3. Click <kbd>Apply</kbd>
 
-<img src="assets/screenshots/jinja2-delimiters-settings.png" alt="Jinja2 Custom Delimiters Settings" width="800"/>
+The settings page exposes the block, variable, comment, and optional line-prefix fields directly in the IDE.
 
 ### 2. Configure File Type Recognition
 For the plugin to format files with custom delimiters, they must be recognized as **Jinja2** language:
@@ -139,7 +146,7 @@ Perfect for:
 3. Are you using PyCharm Professional? (Community editions don't have the Jinja2 formatter)
 
 ### No Syntax Highlighting
-**Expected behavior** with this simplified plugin. Files with custom delimiters won't have full syntax highlighting until you format them at least once. This is a trade-off for reliable formatting.
+**Expected behavior** with this simplified plugin. The plugin focuses on reformatting support and does not implement a custom Jinja2 language layer.
 
 **Workarounds:**
 - Format the file once (<kbd>Cmd/Ctrl+Alt+L</kbd>) to help PyCharm understand the structure
@@ -169,8 +176,8 @@ cd jinja2-custom-delimiters
 The plugin uses a simplified architecture:
 - **IntelliJ Platform SDK** for IDE integration
 - **Pre/Post format processors** for delimiter conversion before/after formatting
-- **Persistent settings** with thread-safe access
-- Works directly with PyCharm's built-in Jinja2 language support
+- **Persistent settings** with thread-safe access and explicit null rejection
+- Works directly with PyCharm's built-in Jinja2 formatter instead of shipping a custom language implementation
 - Only 4 Java source files - minimal complexity and maintenance
 
 **Architecture:**

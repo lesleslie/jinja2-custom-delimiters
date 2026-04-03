@@ -8,6 +8,8 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 @State(
     name = "Jinja2DelimitersSettings",
     storages = @Storage("jinja2_delimiters.xml")
@@ -83,35 +85,35 @@ public class Jinja2DelimitersSettings implements PersistentStateComponent<Jinja2
 
     // Thread-safe setters
     public synchronized void setBlockStartString(@NotNull String value) {
-        this.blockStartString = value;
+        this.blockStartString = requireNonNull(value, "blockStartString");
     }
 
     public synchronized void setBlockEndString(@NotNull String value) {
-        this.blockEndString = value;
+        this.blockEndString = requireNonNull(value, "blockEndString");
     }
 
     public synchronized void setVariableStartString(@NotNull String value) {
-        this.variableStartString = value;
+        this.variableStartString = requireNonNull(value, "variableStartString");
     }
 
     public synchronized void setVariableEndString(@NotNull String value) {
-        this.variableEndString = value;
+        this.variableEndString = requireNonNull(value, "variableEndString");
     }
 
     public synchronized void setCommentStartString(@NotNull String value) {
-        this.commentStartString = value;
+        this.commentStartString = requireNonNull(value, "commentStartString");
     }
 
     public synchronized void setCommentEndString(@NotNull String value) {
-        this.commentEndString = value;
+        this.commentEndString = requireNonNull(value, "commentEndString");
     }
 
     public synchronized void setLineStatementPrefix(@NotNull String value) {
-        this.lineStatementPrefix = value;
+        this.lineStatementPrefix = requireNonNull(value, "lineStatementPrefix");
     }
 
     public synchronized void setLineCommentPrefix(@NotNull String value) {
-        this.lineCommentPrefix = value;
+        this.lineCommentPrefix = requireNonNull(value, "lineCommentPrefix");
     }
 
     public synchronized boolean isUsingCustomDelimiters() {
@@ -134,5 +136,12 @@ public class Jinja2DelimitersSettings implements PersistentStateComponent<Jinja2
 
     private boolean safeStringEmpty(String str) {
         return str == null || str.isEmpty();
+    }
+
+    private String requireNonNull(String value, String fieldName) {
+        if (Objects.isNull(value)) {
+            throw new IllegalArgumentException(fieldName + " cannot be null");
+        }
+        return value;
     }
 }

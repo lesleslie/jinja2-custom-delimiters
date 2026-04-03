@@ -7,24 +7,26 @@
   <!-- Marketplace Tags for Better Discoverability -->
   <category>Languages</category>
   <description><![CDATA[
-    Allows configuration of custom Jinja2 template delimiters while maintaining
-    syntax highlighting, code completion, and other IDE features.
+    Allows configuration of custom Jinja2 template delimiters while preserving
+    PyCharm's built-in Jinja2 formatting workflow.
+    <br><br>
+    <strong>Scope:</strong> This plugin stores custom delimiter settings and converts
+    delimiters during reformatting. It does not add a custom lexer, parser, or completion engine.
     <br><br>
     <strong>Code Formatting:</strong> Automatic code reformatting requires
     <strong>PyCharm Professional</strong>.
-    Community editions support syntax highlighting and other features, but not formatting.
-    <br><br>
-    <img src="https://raw.githubusercontent.com/lesleslie/jinja2-custom-delimiters/assets/screenshots/jinja2-delimiters-settings.png"
-         alt="Plugin Settings Example"
-         width="800"/>
+    A valid JetBrains Marketplace license is required to use the plugin's settings and formatting features.
+    Community editions do not provide the built-in Jinja2 formatter used by this plugin.
   ]]></description>
 
   <change-notes><![CDATA[
-    <h2>1.0.2</h2>
-    <h3>Changed</h3>
+    <h2>1.0.3</h2>
+    <h3>Fixed</h3>
     <ul>
-        <li>Clarified PyCharm Professional-only support and updated verification scope.</li>
-        <li>Documented line-prefix behavior and release metadata alignment.</li>
+        <li>Allowed overlapping custom delimiter prefixes when each configured delimiter token remains distinct.</li>
+        <li>Rejected null settings values consistently in the persistent settings service.</li>
+        <li>Aligned Marketplace description text with the plugin's formatter-focused feature set.</li>
+        <li>Added JetBrains Marketplace license verification and gated paid features accordingly.</li>
     </ul>
   ]]></change-notes>
 
