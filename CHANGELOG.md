@@ -4,6 +4,27 @@
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-09-22
+
+### Changed
+
+- Widened platform support from PyCharm 2025.2–2025.3 to PyCharm 2025.2–2026.x
+- Bumped Java toolchain to 25 (Azul Zulu) for 2026.2 platform
+- Hardened license-check failure mode: any failure (network, endpoint moved, cert expired) now surfaces as a loud error with actionable guidance
+- Bumped IntelliJ Platform Gradle Plugin to 2.19.0; bumped Gradle wrapper to 9.4.1; bumped foojay-resolver-convention to 1.1.0
+
+### Fixed
+
+- Thread-safety hardening in `Jinja2DelimitersSettings`: removed redundant `synchronized` on `getState`; replaced reflective `copyBean` in `loadState` with explicit setters; removed null-fallback paths in getters
+- Removed silent fallback in `LicenseGate.isLicensedOrPending()` and `ensureLicensed()`
+- Replaced `catch (Throwable ignored)` in `MarketplaceLicenseChecker` with logged+rethrown exceptions
+
+### Removed
+
+- GitHub Actions workflows (replaced by crackerjack audit surface)
+- `codecov.yml` (orphaned after workflow deletion)
+- `.github/dependabot.yml` (replaced by crackerjack)
+
 ## [1.0.3] - 2026-01-19
 
 ### Fixed
@@ -46,7 +67,7 @@
 ### Fixed
 
 - Build configuration compatibility with Gradle 9.1.0
-- Added `pluginUntilBuild` configuration for version compatibility (252 to 253.*)
+- Added `pluginUntilBuild` configuration for version compatibility (252 to 253.\*)
 - Removed unnecessary `pythonid.xml` dependency
 - Fixed GitHub link in plugin.xml change-notes
 - Corrected product descriptor release version to match plugin version
@@ -73,6 +94,7 @@
 ### Changed
 
 - **MAJOR ARCHITECTURAL SIMPLIFICATION: Removed custom language implementation**
+
   - Removed entire custom language infrastructure (lang/, lexer/, parser/, psi/, highlighting/, etc.)
   - Plugin now works directly with PyCharm's built-in Jinja2 language
   - Reduced from dozens of files to just 4 Java source files
@@ -80,6 +102,7 @@
   - Zero maintenance burden - automatically benefits from PyCharm's Jinja2 updates
 
 - **Replaced custom formatter with PyCharm Professional's Jinja2 formatter delegation**
+
   - Removed 620 lines of buggy custom formatting code
   - Perfect formatting now leverages PyCharm Pro's battle-tested Jinja2 formatter
   - Resolves all spacing and indentation issues
@@ -129,7 +152,7 @@
 
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 
-[Unreleased]: https://github.com/lesleslie/jinja2-custom-delimiters/compare/v0.3.0...HEAD
-[0.3.0]: https://github.com/lesleslie/jinja2-custom-delimiters/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/lesleslie/jinja2-custom-delimiters/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/lesleslie/jinja2-custom-delimiters/commits/v0.1.1
+[0.2.0]: https://github.com/lesleslie/jinja2-custom-delimiters/compare/v0.1.1...v0.2.0
+[0.3.0]: https://github.com/lesleslie/jinja2-custom-delimiters/compare/v0.2.0...v0.3.0
+[unreleased]: https://github.com/lesleslie/jinja2-custom-delimiters/compare/v0.3.0...HEAD
