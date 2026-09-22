@@ -2,7 +2,7 @@
   <id>com.wedgwoodwebworks.jinja2customdelimiters</id>
   <name>Jinja2 Custom Delimiters</name>
   <vendor email="les@wedgwoodwebworks.com" url="https://wedgwoodwebworks.com">Wedgwood Web Works</vendor>
-  <product-descriptor code="PJINJACUSTOMDEL" release-date="20260922" release-version="11"/>
+  <product-descriptor code="PJINJACUSTOMDEL" release-date="20260922" release-version="20262"/>
 
   <!-- Marketplace Tags for Better Discoverability -->
   <category>Languages</category>
@@ -20,7 +20,7 @@
   ]]></description>
 
   <change-notes><![CDATA[
-    <h2>1.0.4</h2>
+    <h2>2026.2.1</h2>
     <h3>Changed</h3>
     <ul>
         <li>Widened platform support from PyCharm 2025.2–2025.3 to PyCharm 2025.2–2026.x.</li>

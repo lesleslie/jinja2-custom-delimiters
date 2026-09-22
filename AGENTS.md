@@ -18,7 +18,7 @@
 
 ## Coding Style & Naming Conventions
 
-- **Java 25 toolchain (Azul) is REQUIRED** (was Java 21; bumped in 1.0.4 for 2026.2 platform). `foojay-resolver-convention` (>= 1.1.0) auto-provisions Azul Zulu 25.
+- **Java 25 toolchain (Azul) is REQUIRED** (was Java 21; bumped in 2026.2.1 for 2026.2 platform). `foojay-resolver-convention` (>= 1.1.0) auto-provisions Azul Zulu 25.
 - Use IntelliJ IDEA’s default Java code style (4-space indentation, braces on the same line, wrap as IntelliJ formats by default).
 - Keep package names under `com.wedgwoodwebworks.jinja2customdelimiters` and mirror existing naming (e.g., `Jinja2Delimiters...`).
 - No formatter or linter is configured; keep changes minimal and consistent with nearby code.
