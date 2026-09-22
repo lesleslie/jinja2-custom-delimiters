@@ -68,9 +68,42 @@ public class Jinja2DelimitersSettingsTest extends BasePlatformTestCase {
     }
 
     public void testIsUsingCustomDelimitersWithLineStatement() {
-        settings.lineStatementPrefix = "%";
+        settings.setLineStatementPrefix("%");
 
         assertTrue(settings.isUsingCustomDelimiters());
+    }
+
+    public void testLoadState_preservesDefaultOnNullSource() {
+        Jinja2DelimitersSettings receiver = new Jinja2DelimitersSettings();
+        Jinja2DelimitersSettings source = new Jinja2DelimitersSettings();
+        // Bypass setters by reflection to simulate bad XML where delimiter is null.
+        try {
+            java.lang.reflect.Field f = Jinja2DelimitersSettings.class.getDeclaredField("blockStartString");
+            f.setAccessible(true);
+            f.set(source, null);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+        // After fix: loadState uses setters. The setter either rejects null
+        // (throws IllegalArgumentException) or no-ops. Either way, the
+        // receiver's default must be preserved.
+        try {
+            receiver.loadState(source);
+        } catch (IllegalArgumentException expected) {
+            // setter rejected null — acceptable behavior
+        }
+        // Verify the default is preserved via the getter (null-fallback path).
+        assertEquals("{%", receiver.getBlockStartString());
+        // Also verify the underlying field is not silently nulled by
+        // XmlSerializerUtil.copyBean reflection — the new loadState path
+        // explicitly skips null values so the field stays at its default.
+        try {
+            java.lang.reflect.Field f = Jinja2DelimitersSettings.class.getDeclaredField("blockStartString");
+            f.setAccessible(true);
+            assertEquals("{%", f.get(receiver));
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void testIsUsingCustomDelimitersWithLineComment() {

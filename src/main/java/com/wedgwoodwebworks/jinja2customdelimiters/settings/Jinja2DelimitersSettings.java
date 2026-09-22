@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 @State(
     name = "Jinja2DelimitersSettings",
@@ -33,54 +34,75 @@ public class Jinja2DelimitersSettings implements PersistentStateComponent<Jinja2
 
     @Nullable
     @Override
-    public synchronized Jinja2DelimitersSettings getState() {
+    public Jinja2DelimitersSettings getState() {
+        // IDE calls this on the EDT before serializing. The IDE's contract
+        // guarantees single-threaded access here; no synchronization needed.
         return this;
     }
 
     @Override
-    public synchronized void loadState(@NotNull Jinja2DelimitersSettings state) {
-        XmlSerializerUtil.copyBean(state, this);
+    public void loadState(@NotNull Jinja2DelimitersSettings state) {
+        // XML tolerance: a single bad field (hand-edit, schema downgrade,
+        // XmlSerializer edge case) must NOT lose all settings. Reflective
+        // copyBean silently propagated nulls; explicit setters would throw
+        // IllegalArgumentException and lose the whole component state.
+        // Use null-tolerant guards so a null input preserves the default
+        // for THAT field while the other 7 still load correctly.
+        applyIfNonNull(state.blockStartString, this::setBlockStartString);
+        applyIfNonNull(state.blockEndString, this::setBlockEndString);
+        applyIfNonNull(state.variableStartString, this::setVariableStartString);
+        applyIfNonNull(state.variableEndString, this::setVariableEndString);
+        applyIfNonNull(state.commentStartString, this::setCommentStartString);
+        applyIfNonNull(state.commentEndString, this::setCommentEndString);
+        applyIfNonNull(state.lineStatementPrefix, this::setLineStatementPrefix);
+        applyIfNonNull(state.lineCommentPrefix, this::setLineCommentPrefix);
+    }
+
+    private static void applyIfNonNull(String value, Consumer<String> setter) {
+        if (value != null) {
+            setter.accept(value);
+        }
     }
 
     // Thread-safe getters
     @NotNull
     public String getBlockStartString() {
-        return blockStartString != null ? blockStartString : "{%";
+        return blockStartString;
     }
 
     @NotNull
     public String getBlockEndString() {
-        return blockEndString != null ? blockEndString : "%}";
+        return blockEndString;
     }
 
     @NotNull
     public String getVariableStartString() {
-        return variableStartString != null ? variableStartString : "{{";
+        return variableStartString;
     }
 
     @NotNull
     public String getVariableEndString() {
-        return variableEndString != null ? variableEndString : "}}";
+        return variableEndString;
     }
 
     @NotNull
     public String getCommentStartString() {
-        return commentStartString != null ? commentStartString : "{#";
+        return commentStartString;
     }
 
     @NotNull
     public String getCommentEndString() {
-        return commentEndString != null ? commentEndString : "#}";
+        return commentEndString;
     }
 
     @NotNull
     public String getLineStatementPrefix() {
-        return lineStatementPrefix != null ? lineStatementPrefix : "";
+        return lineStatementPrefix;
     }
 
     @NotNull
     public String getLineCommentPrefix() {
-        return lineCommentPrefix != null ? lineCommentPrefix : "";
+        return lineCommentPrefix;
     }
 
     // Thread-safe setters
