@@ -10,6 +10,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.codeStyle.PreFormatProcessor;
 import com.wedgwoodwebworks.jinja2customdelimiters.licensing.LicenseGate;
+import com.wedgwoodwebworks.jinja2customdelimiters.licensing.LicenseUnavailableException;
 import com.wedgwoodwebworks.jinja2customdelimiters.settings.Jinja2DelimitersSettings;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +28,21 @@ public class CustomJinja2PreFormatProcessor implements PreFormatProcessor {
     @NotNull
     @Override
     public TextRange process(@NotNull ASTNode element, @NotNull TextRange range) {
+        // License check FIRST — must hard-fail before any work, and MUST NOT
+        // be inside the outer try/catch (which would silently swallow the
+        // throw). First-launch permissive (LicenseGate.isLicensedOrPending
+        // returns true on null facade) means no throw during cold start.
+        if (!LicenseGate.ensureLicensed("custom Jinja2 delimiter formatting")) {
+            throw new LicenseUnavailableException(
+                "Your Jinja2 Custom Delimiters license could not be verified.\n" +
+                "Reason: licensing subsystem returned no answer (network unreachable " +
+                "or marketplace endpoint moved).\n" +
+                "Action: Visit https://plugins.jetbrains.com/plugin/com.wedgwoodwebworks.jinja2customdelimiters " +
+                "to renew or re-authenticate. Restart PyCharm after renewal.\n" +
+                "(If this error persists, contact les@wedgwoodwebworks.com)"
+            );
+        }
+
         try {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("PreFormatProcessor: Processing range " + range);
@@ -59,13 +75,6 @@ public class CustomJinja2PreFormatProcessor implements PreFormatProcessor {
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug("PreFormatProcessor: Processing Jinja2 file: " + file.getName());
-            }
-
-            if (!LicenseGate.ensureLicensed("custom Jinja2 delimiter formatting")) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("PreFormatProcessor: Skipping formatting because the plugin is not licensed");
-                }
-                return range;
             }
 
             Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);

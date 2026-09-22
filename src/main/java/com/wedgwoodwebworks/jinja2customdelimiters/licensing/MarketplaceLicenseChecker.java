@@ -9,6 +9,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ex.ActionUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.LicensingFacade;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -118,6 +119,15 @@ public final class MarketplaceLicenseChecker {
 
     @Nullable
     public static Boolean isLicensed() {
+        // Test/QA seam: allow forcing license failure for hard-fail UX testing.
+        // Set MAHAVISHNU_JINJA_LICENSE_MOCK=invalid (returns false) or
+        // MAHAVISHNU_JINJA_LICENSE_MOCK=valid (returns true). Used by Task 11.6.
+        String mock = System.getenv("MAHAVISHNU_JINJA_LICENSE_MOCK");
+        if (mock != null) {
+            if ("invalid".equalsIgnoreCase(mock)) return Boolean.FALSE;
+            if ("valid".equalsIgnoreCase(mock)) return Boolean.TRUE;
+        }
+
         LicensingFacade facade = LicensingFacade.getInstance();
         if (facade == null) {
             return null;
@@ -192,7 +202,9 @@ public final class MarketplaceLicenseChecker {
 
             String licenseData = new String(licenseBytes, StandardCharsets.UTF_8);
             return licenseData.contains("\"licenseId\":\"" + licenseId + "\"");
-        } catch (Throwable ignored) {
+        } catch (Exception e) {
+            Logger.getInstance(MarketplaceLicenseChecker.class).warn(
+                "License verification failed: " + e.getClass().getSimpleName() + ": " + e.getMessage());
             return false;
         }
     }
@@ -220,7 +232,9 @@ public final class MarketplaceLicenseChecker {
             return signature.verify(signatureBytes)
                 && expectedMachineId.equals(machineId)
                 && Math.abs(System.currentTimeMillis() - timestamp) < TIMESTAMP_VALIDITY_PERIOD_MS;
-        } catch (Throwable ignored) {
+        } catch (Exception e) {
+            Logger.getInstance(MarketplaceLicenseChecker.class).warn(
+                "License verification failed: " + e.getClass().getSimpleName() + ": " + e.getMessage());
             return false;
         }
     }
