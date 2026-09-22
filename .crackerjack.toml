@@ -1,0 +1,12 @@
+# Crackerjack audit config for jinja2-custom-delimiters
+# Per feedback-bodai-no-provider-specific-ci.md: crackerjack is the audit surface.
+# The Kotlin adapter auto-detects build.gradle.kts presence; no `language` field needed.
+
+# Hook coverage: ktlint + detekt + test
+# Crackerjack hook names (NOT Gradle task names):
+#   - kotlin.ktlint  -> runs ./gradlew ktlintCheck
+#   - kotlin.detekt   -> runs ./gradlew detekt
+#   - kotlin.test     -> runs ./gradlew test
+
+# Failure semantics: default (any non-zero exit aborts the run).
+# No fail_strict override needed — the default behavior matches the spec's hard-fail intent.

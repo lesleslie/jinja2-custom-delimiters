@@ -6,6 +6,8 @@ opentest4j = "1.3.0"
 # plugins
 changelog = "2.5.0"
 intelliJPlatform = "2.19.0"
+ktlint = "14.2.0"
+detekt = "1.23.8"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -14,3 +16,5 @@ opentest4j = { group = "org.opentest4j", name = "opentest4j", version.ref = "ope
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
 intelliJPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intelliJPlatform" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

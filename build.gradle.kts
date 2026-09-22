@@ -8,6 +8,8 @@ plugins {
     id("java") // Java support
     alias(libs.plugins.intelliJPlatform) // IntelliJ Platform Gradle Plugin
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
+    alias(libs.plugins.ktlint) // ktlint (crackerjack hook dependency)
+    alias(libs.plugins.detekt) // detekt (crackerjack hook dependency)
 }
 
 group = providers.gradleProperty("pluginGroup").get()
