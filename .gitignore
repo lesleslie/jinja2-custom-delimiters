@@ -159,3 +159,22 @@ tests/archived/
 # `.scratch` is load-bearing — the gitignore rule only matches with it.
 docs/assets/images/.scratch/
 docs/assets/images/.scratch/**
+
+# IntelliJ Platform / Gradle runtime artifacts
+.gradle/
+.intellijPlatform/sandbox/
+.jbeval/
+
+# Crackerjack runtime artifacts (per bodai-canonical-gitignore-runtime-artifacts.md)
+.crackerjack/outputs/
+.crackerjack_cache/
+.crackerjack-state/
+.crackerjack-hooks-updated/
+.crackerjack-mcp/
+.oneiric_cache/
+
+# Plugin distribution archives
+build/distributions/
+
+# Backup artifacts
+.bak
